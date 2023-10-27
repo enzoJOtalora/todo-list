@@ -26,6 +26,14 @@ const projectDetails = document.getElementById("projectDetails");
 const projectCloseBtn = document.querySelector("#close-dialog-project");
 const projectForm = document.querySelector("#project-form");
 
+//Project div
+
+const projecTab = document.createElement("div");
+projecTab.setAttribute("id","projects");
+
+const elementsDiv = document.createElement("div");
+elementsDiv.setAttribute("id","elementsDiv");
+
 let myTodos = [];
 let myProjects = [];
 

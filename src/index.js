@@ -11,7 +11,7 @@ const projectAddBtn = document.querySelector("#new-project");
 
 //ToDo dialog group
 const todoDialog = document.querySelector("#todo-modal");
-const todoName = document.getElementById("#name");
+const todoName = document.getElementById("name");
 const todoDetails = document.getElementById("details");
 const todoDate = document.getElementById("date");
 const todoPrio = document.getElementById("prio");
@@ -22,7 +22,7 @@ const todoForm = document.querySelector("#todo-form");
 
 const projectDialog = document.querySelector("#project-modal");
 const projectName = document.getElementById("projectName");
-const projectDetails = document.getElementById("projectDescription");
+const projectDetails = document.getElementById("projectDetails");
 const projectCloseBtn = document.querySelector("#close-dialog-project");
 const projectForm = document.querySelector("#project-form");
 
@@ -45,14 +45,20 @@ projectCloseBtn.addEventListener('click',()=>{
 
 todoForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    logToDo();
+    myTodos.push(logToDo());
+    updateStorage();
+})
 
+projectForm.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    myProjects.push(logProject());
+    updateStorage();
 })
 
 const todoMaker = () => {
     return {
         name: '',
-        description: '',
+        details: '',
         day: '',
         month: '',
         year: '',
@@ -73,13 +79,14 @@ const todoMaker = () => {
 const projectMaker = () => {
     return {
         title: '',
-        description: '',
+        details: '',
         toDoArray: [],
     }
 }
 
 function logToDo(){
     let newTodo = todoMaker();
+    console.log(todoName.value);
     newTodo.name = todoName.value;
     newTodo.details = todoDetails.value;
     let date = todoDate.value.split('-');
@@ -110,6 +117,9 @@ function checkStorage(){
 }
 
 function updateStorage(){
-    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+    localStorage.setItem("myProjects", JSON.stringify(myProjects));
     localStorage.setItem("myTodos", JSON.stringify(myTodos));
+
+    console.log(JSON.parse(localStorage.getItem("myTodos")));
+    console.log(JSON.parse(localStorage.getItem("myProjects")));
 }

@@ -46,22 +46,7 @@ content.appendChild(projectTab);
 
 const elementsDiv = document.createElement("div");
 elementsDiv.setAttribute("id","elementsDiv");
-const todoTable = document.createElement("table");
-todoTable.setAttribute("class","todoTable");
-const firstRow = document.createElement("tr");
-firstRow.insertAdjacentHTML('afterbegin',`
-<th>Title</th>
-<th>Details</th>
-<th>Due Date</th>
-<th>Complete</th>
-<th>Priority</th>
-<th>Delete</th>`);
-const todoList = document.createElement("tbody");
-todoList.setAttribute("id","todoList");
-todoTable.appendChild(firstRow);
-todoTable.appendChild(todoList);
-elementsDiv.appendChild(todoTable);
-content.appendChild(projectTab);
+content.appendChild(elementsDiv);
 
 
 let myTodos = [];
@@ -70,9 +55,9 @@ let myProjects = [];
 todoAddBtn.addEventListener('click', ()=>{
     todoDialog.showModal();
 })
-todoCloseBtn.addEventListener('click',()=>{
+/*todoCloseBtn.addEventListener('click',()=>{
     todoDialog.close();
-})
+})*/
 
 projectAddBtn.addEventListener('click', ()=>{
     projectDialog.showModal();
@@ -85,6 +70,10 @@ todoForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     myTodos.push(logToDo());
     updateStorage();
+    checkStorage();
+    elementsDiv.innerHTML=generateTable(myTodos);
+    clearForm();
+    todoDialog.close();
 })
 
 projectForm.addEventListener('submit',(e)=>{
@@ -162,6 +151,7 @@ function updateStorage(){
     console.log(JSON.parse(localStorage.getItem("myProjects")));
 }
 
+/*
 function generateTable() {
     // creates a <table> element and a <tbody> element
     const tbl = document.createElement("table");
@@ -174,7 +164,7 @@ function generateTable() {
       // creates a table row
       const row = document.createElement("tr");
   
-      for (let j = 0; j < 2; j++) {
+      for (let j = 0; j <= 5; j++) {
         // Create a <td> element and a text node, make the text
         // node the contents of the <td>, and put the <td> at
         // the end of the table row
@@ -182,10 +172,35 @@ function generateTable() {
         let textToInsert = '';
         if(i==0){
             switch(j){
-                case 0:
+                case 0:textToInsert="Item";
+                break;
+                case 1:textToInsert="Details";
+                break;
+                case 2:textToInsert="Due Date";
+                break;
+                case 3:textToInsert="Priority";
+                break;
+                case 4:textToInsert="Completion";
+                break;
+                case 5:textToInsert="Delete";
+                break;
+            }
+        } else {
+            switch(j){
+                case 0:textToInsert=myTodos[i-1].name;
+                break;
+                case 1:textToInsert=myTodos[i-1].details;
+                break;
+                case 2:textToInsert=myTodos[i-1].day+"/"+myTodos[i-1].month+"/"+myTodos[i-1].year;
+                break;
+                case 3:textToInsert=myTodos[i-1].priority;
+                break;
+                case 4:textToInsert=myTodos[i-1].complete;
+                break;
+                case 5:textToInsert="Delete";
             }
         }
-        const cellText = document.createTextNode(`cell in row ${i}, column ${j}`);
+        const cellText = document.createTextNode(textToInsert);
         cell.appendChild(cellText);
         row.appendChild(cell);
       }
@@ -197,8 +212,26 @@ function generateTable() {
     // put the <tbody> in the <table>
     tbl.appendChild(tblBody);
     // appends <table> into <body>
-    document.body.appendChild(tbl);
+    content.appendChild(tbl);
     // sets the border attribute of tbl to '2'
     tbl.setAttribute("border", "2");
   }
+  */
   
+  function generateTable(data) {  
+    let table = '<table>';  
+    table += '<tr><th>Name</th><th>Details</th><th>Due Date</th><th>Priority</th></tr>';  
+    data.forEach(item => {  
+    table += `<tr><td>${item.name}</td><td>${item.details}</td><td>${item.day}/${item.month}/${item.year}</td>
+    <td>${item.priority}</td><td><${item.complete}</td><td><button>Delete</button></td></tr>`;  
+    });  
+    table += '</table>';  
+    return table;  
+    }  
+
+  function clearForm(){
+    todoName.value="";
+    todoDetails.value="";
+    todoDate.value="";
+    todoPrio.value="";
+  }

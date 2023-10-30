@@ -1,5 +1,7 @@
 import './style.css';
 
+const content = document.querySelector("#content");
+
 const element = document.createElement("div");
 element.innerHTML="<hr/><h1>SCRIPT LOADER</h1>";
 document.body.appendChild(element);
@@ -28,11 +30,39 @@ const projectForm = document.querySelector("#project-form");
 
 //Project div
 
-const projecTab = document.createElement("div");
-projecTab.setAttribute("id","projects");
+const projectTab = document.createElement("div");
+projectTab.setAttribute("id","projects");
+const listProjects = document.createElement("ul");
+listProjects.setAttribute("id","projectList");
+const allListItem = document.createElement("li")
+allListItem.setAttribute("id","all");
+allListItem.setAttribute("class","active");
+allListItem.textContent="All items";
+listProjects.appendChild(allListItem);
+projectTab.appendChild(listProjects);
+content.appendChild(projectTab);
+
+//Todos div
 
 const elementsDiv = document.createElement("div");
 elementsDiv.setAttribute("id","elementsDiv");
+const todoTable = document.createElement("table");
+todoTable.setAttribute("class","todoTable");
+const firstRow = document.createElement("tr");
+firstRow.insertAdjacentHTML('afterbegin',`
+<th>Title</th>
+<th>Details</th>
+<th>Due Date</th>
+<th>Complete</th>
+<th>Priority</th>
+<th>Delete</th>`);
+const todoList = document.createElement("tbody");
+todoList.setAttribute("id","todoList");
+todoTable.appendChild(firstRow);
+todoTable.appendChild(todoList);
+elementsDiv.appendChild(todoTable);
+content.appendChild(projectTab);
+
 
 let myTodos = [];
 let myProjects = [];
@@ -131,3 +161,44 @@ function updateStorage(){
     console.log(JSON.parse(localStorage.getItem("myTodos")));
     console.log(JSON.parse(localStorage.getItem("myProjects")));
 }
+
+function generateTable() {
+    // creates a <table> element and a <tbody> element
+    const tbl = document.createElement("table");
+    const tblBody = document.createElement("tbody");
+    
+
+    checkStorage();
+    // creating all cells
+    for (let i = 0; i < myTodos.length+1; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+  
+      for (let j = 0; j < 2; j++) {
+        // Create a <td> element and a text node, make the text
+        // node the contents of the <td>, and put the <td> at
+        // the end of the table row
+        const cell = document.createElement("td");
+        let textToInsert = '';
+        if(i==0){
+            switch(j){
+                case 0:
+            }
+        }
+        const cellText = document.createTextNode(`cell in row ${i}, column ${j}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+      }
+  
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    }
+  
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    document.body.appendChild(tbl);
+    // sets the border attribute of tbl to '2'
+    tbl.setAttribute("border", "2");
+  }
+  

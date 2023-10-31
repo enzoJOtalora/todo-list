@@ -80,6 +80,10 @@ projectForm.addEventListener('submit',(e)=>{
     e.preventDefault();
     myProjects.push(logProject());
     updateStorage();
+    checkStorage();
+    listItemsProjects(myProjects);
+    clearProjectForm();
+    projectDialog.close();
 })
 
 const todoMaker = () => {
@@ -226,12 +230,29 @@ function generateTable() {
     <td>${item.priority}</td><td><${item.complete}</td><td><button>Delete</button></td></tr>`;  
     });  
     table += '</table>';  
+    table +='<button onclick="todoDialog.showModal();">Add new item</button>';
     return table;  
     }  
+
+function listItemsProjects(data){
+    
+    data.forEach(project => {
+        const projectListItem = document.createElement("li");
+        projectListItem.textContent=project.title;
+        projectListItem.addEventListener("click", ()=>{
+            elementsDiv.innerHTML=generateTable(project.toDoArray);
+        });
+        listProjects.appendChild(projectListItem);
+    });
+}
 
   function clearForm(){
     todoName.value="";
     todoDetails.value="";
     todoDate.value="";
     todoPrio.value="";
+  }
+  function clearProjectForm(){
+    projectName.value="";
+    projectDetails.value="";
   }
